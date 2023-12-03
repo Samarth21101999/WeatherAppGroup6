@@ -16,6 +16,15 @@
         android:scrollbars="vertical"
 >
 
+
+        <Button
+            android:id="@+id/listBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/list"
+            android:layout_gravity="center"
+            />
+
         <TextView
             android:id="@+id/cityName"
             android:layout_width="match_parent"
