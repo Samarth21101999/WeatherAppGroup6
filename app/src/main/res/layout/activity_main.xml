@@ -7,8 +7,6 @@
     android:padding="5dp"
     tools:context=".activity.MainActivity"
     >
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,8 +17,8 @@
 
         <Button
             android:id="@+id/listBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/buttonSize"
+            android:layout_height="@dimen/buttonSize"
             android:background="@drawable/list"
             android:layout_gravity="center"
             />
@@ -30,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:hint="City Name"
+            android:hint="@string/cityName"
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="@dimen/cityFont"
@@ -38,42 +36,38 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/linearLayoutWidth"
             android:orientation="horizontal"
             android:gravity="center">
 
-
-
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="20dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/linearLayoutWidth"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="1"
+                android:layout_marginRight="@dimen/buttonSize"
                 android:src="@mipmap/ic_launcher" />
             <TextView
                 android:id="@+id/temp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:text="Temperature"
+                android:text="@string/temp"
+                android:textSize="@dimen/cityFont"
                 android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="20dp"
             android:orientation="horizontal"
             android:gravity="center">
-
-
 
             <TextView
                 android:id="@+id/wind"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Wind"
+                android:text="@string/wind"
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:src="@mipmap/ic_launcher" />
@@ -83,29 +77,38 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Humidity"
+                android:text="@string/humidity"
                 android:textStyle="bold"/>
         </LinearLayout>
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Description"
+            android:text="@string/description"
             android:gravity="center"
             android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/forecastTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/forecast"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"/>
 
-        <HorizontalScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
-
             <androidx.recyclerview.widget.RecyclerView
+                android:foreground="@drawable/border"
+                android:layout_marginStart="@dimen/recyclerSize"
+                android:layout_marginEnd="@dimen/recyclerSize"
                 android:id="@+id/forecast"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        </HorizontalScrollView>
-
+        </ScrollView>
     </LinearLayout>
 </androidx.wear.widget.BoxInsetLayout>

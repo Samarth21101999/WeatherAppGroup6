@@ -2,20 +2,20 @@ package com.example.weatherappgroup6.model;
 
 public class Weather {
 
-   double temp;
+   String temp;
    String icon;
    String day;
-   public Weather(double temp, String icon, String day) {
-      this.temp = temp;
+   public Weather(String temp, String icon, String day) {
+      this.temp = String.valueOf(temp);
       this.icon = icon;
       this.day = day;
    }
 
-   public double getTemp() {
+   public String getTemp() {
       return temp;
    }
 
-   public void setTemp(double temp) {
+   public void setTemp(String temp) {
       this.temp = temp;
    }
 

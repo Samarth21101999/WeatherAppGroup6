@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="cityFont">20sp</dimen>
+    <dimen name="buttonSize">20dp</dimen>
+    <dimen name="linearLayoutWidth">40dp</dimen>
+    <dimen name="recyclerSize">30dp</dimen>
 </resources>

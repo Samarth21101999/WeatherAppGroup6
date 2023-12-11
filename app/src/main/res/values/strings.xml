@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">WeatherAppGroup6</string>
+    <string name="temp">Temp</string>
+    <string name="cityName">City Name</string>
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="description">Description</string>
+    <string name="forecast">Forecast for week"</string>
 </resources>

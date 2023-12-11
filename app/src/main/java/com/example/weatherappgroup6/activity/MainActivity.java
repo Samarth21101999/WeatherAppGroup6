@@ -5,6 +5,7 @@ import static android.location.Location.convert;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
@@ -48,17 +49,13 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     WeatherRecyclerViewAdapter weatherAdapter;
     WeatherColumnBinding weatherColumnBinding;
-//    private ArrayList permissionsToRequest;
-//    private ArrayList permissionsRejected = new ArrayList();
-//    private ArrayList permissions = new ArrayList();
-
     private final static int ALL_PERMISSIONS_RESULT = 101;
     ActivityMainBinding mainBinding;
     private LocationRequest locationRequest;
     private final static int REQUEST_CODE = 100;
 
     List<Weather> weatherList = new ArrayList<>();
-    List<Weather> weather=new ArrayList<>();
+//    List<Weather> weather=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
         View view = mainBinding.getRoot();
         setContentView(view);
         context = this;
+
+
+
+
+
         mainBinding.listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,24 +78,14 @@ public class MainActivity extends AppCompatActivity {
         });
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 2000,
                 10, locationListenerGPS);
-        //isLocationEnabled();
-        // fusedlocation = LocationServices.getFusedLocationProviderClient(this);
 
-        //getLocation();
     }
-
+//Get the location and call getCurrentDataFromAPI and getForecastDataFromAPI methods
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(android.location.Location location) {
@@ -106,13 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 if (!(cityname == null)) {
                     getCurrentDataFromAPI(latitude, longitude, context);
                     getForecastDataFromAPI(latitude, longitude, context);
-
-                    mainBinding.forecast.setHasFixedSize(true);
-
-                    LinearLayoutManager mLayoutManager=new LinearLayoutManager(context);
-                    mainBinding.forecast.setLayoutManager(mLayoutManager);
-                    weatherAdapter=new WeatherRecyclerViewAdapter(weatherList,context);
-//                    weatherColumnBinding.
                 } else {
                     Toast.makeText(context, "Error in getting location", Toast.LENGTH_SHORT);
                 }
@@ -149,9 +134,6 @@ public class MainActivity extends AppCompatActivity {
         String orginalUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + appid;
         Log.d("URL", orginalUrl);
         request = Volley.newRequestQueue(context);
-        double temp, wind;
-        String description, main;
-        int humidity;
         // String Request initialized
         StringRequest stringRequest = new StringRequest(Request.Method.GET, orginalUrl, new Response.Listener<String>() {
             @Override
@@ -175,32 +157,60 @@ public class MainActivity extends AppCompatActivity {
             JSONObject mainObject = jsonObject.getJSONObject("main");
             JSONObject windObject = jsonObject.getJSONObject("wind");
             double temp = Double.parseDouble(mainObject.getString("temp"));
+            Log.d("Current Icon",icon);
             switch (icon) {
-                case "1n":
+                case "01n":
                     mainBinding.imageView.setImageResource(R.drawable.sun);
                     break;
-                case "2n":
+                case "01d":
+                    mainBinding.imageView.setImageResource(R.drawable.sun);
+                    break;
+                case "02n":
                     mainBinding.imageView.setImageResource(R.drawable.cloudy);
                     break;
-                case "3n":
+                case "02d":
+                    mainBinding.imageView.setImageResource(R.drawable.cloudy);
+                    break;
+                case "03n":
                     mainBinding.imageView.setImageResource(R.drawable.cloud);
                     break;
-                case "4n":
+                case "03d":
+                    mainBinding.imageView.setImageResource(R.drawable.cloud);
+                    break;
+                case "04n":
                     mainBinding.imageView.setImageResource(R.drawable.brokenclouds);
                     break;
-                case "9n":
+                case "04d":
+                    mainBinding.imageView.setImageResource(R.drawable.brokenclouds);
+                    break;
+                case "09n":
+                    mainBinding.imageView.setImageResource(R.drawable.rainy);
+                    break;
+                case "09d":
                     mainBinding.imageView.setImageResource(R.drawable.rainy);
                     break;
                 case "10n":
                     mainBinding.imageView.setImageResource(R.drawable.rain);
                     break;
+                case "10d":
+                    mainBinding.imageView.setImageResource(R.drawable.rain);
+                    break;
                 case "11n":
+                    mainBinding.imageView.setImageResource(R.drawable.storm);
+                    break;
+                case "11d":
                     mainBinding.imageView.setImageResource(R.drawable.storm);
                     break;
                 case "13n":
                     mainBinding.imageView.setImageResource(R.drawable.snowy);
                     break;
+                case "13d":
+                    mainBinding.imageView.setImageResource(R.drawable.snowy);
+                    break;
                 case "50n":
+                    mainBinding.imageView.setImageResource(R.drawable.foog);
+                    break;
+                case "50d":
                     mainBinding.imageView.setImageResource(R.drawable.foog);
                     break;
                 default:
@@ -217,17 +227,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void getForecastDataFromAPI(double latitude, double longitude, Context context) {
         RequestQueue request;
-//        List<Weather> weatherData = new ArrayList<>();
         String appid = "21e8295debb700f5f00ed1a6ee5f95ad";
         String lat = String.valueOf(latitude);
         String lon = String.valueOf(longitude);
         String orginalUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=7" + "&appid=" + appid;
         Log.d("URL", orginalUrl);
         request = Volley.newRequestQueue(context);
-        double temp = 0, wind;
-        String description, main;
-        int humidity;
-        // String Request initialized
         StringRequest stringRequest = new StringRequest(Request.Method.GET, orginalUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -240,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         request.add(stringRequest);
-        setLayout(weatherList);
     }
     private void setForecast(String response) {
 
@@ -253,169 +257,41 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject tempObject = weatherData.getJSONObject("temp");
                 JSONArray weatherArray = weatherData.getJSONArray("weather");
                 JSONObject weatherObject = weatherArray.getJSONObject(0);
-                double temp = Double.parseDouble(tempObject.getString("day"));
+                double temp = (Double.parseDouble(tempObject.getString("day"))-273.5);
                 String icon = weatherObject.getString("icon");
                 long date = Long.valueOf(weatherData.getString("dt")) * 1000;// its need to be in milisecond
                 Date dateFormatted = new java.util.Date(date);
                 String day = new SimpleDateFormat("EEEE", Locale.getDefault()).format(dateFormatted);
                 Log.d("Day", day.substring(0, 3));
-                weatherList.add(new Weather(temp, icon, day.substring(0, 3)));
+                weatherList.add(new Weather(String.format("%.1f",temp), icon, day.substring(0, 3)));
                 Log.d("Array Size", String.valueOf(weatherList.size()));
             }
+            setLayout(weatherList);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }
-        private void setLayout(List<Weather> weatherList){
+    private void setLayout(List<Weather> weatherList){
+        Log.d("METHOD","SETLAYOUT()");
         mainBinding.forecast.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager=new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager=new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
         mainBinding.forecast.setLayoutManager(mLayoutManager);
-        //updateTaskAdapter();
-        bindAdapter(weatherList);
-    }
-//    private void updateTaskAdapter(){
-//        bindAdapter();
-//    }
-    private void bindAdapter(List<Weather> weatherList){
         weatherAdapter=new WeatherRecyclerViewAdapter(weatherList,getApplicationContext());
         mainBinding.forecast.setAdapter(weatherAdapter);
         weatherAdapter.notifyDataSetChanged();
     }
+
     protected void onResume() {
         super.onResume();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 2000,
                 10, locationListenerGPS);
-        //isLocationEnabled();
 
     }
 
-//    private void isLocationEnabled() {
-//
-//        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-//            AlertDialog.Builder alertDialog=new AlertDialog.Builder(context);
-//            alertDialog.setTitle("Enable Location");
-//            alertDialog.setMessage("Your locations setting is not enabled. Please enabled it in settings menu.");
-//            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener(){
-//                public void onClick(DialogInterface dialog, int which){
-//                    Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                    startActivity(intent);
-//                }
-//            });
-//            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-//                public void onClick(DialogInterface dialog, int which){
-//                    dialog.cancel();
-//                }
-//            });
-//            AlertDialog alert=alertDialog.create();
-//            alert.show();
-//        }
-//        else{
-//            AlertDialog.Builder alertDialog=new AlertDialog.Builder(context);
-//            alertDialog.setTitle("Confirm Location");
-//            alertDialog.setMessage("Your Location is enabled, please enjoy");
-//            alertDialog.setNegativeButton("Back to interface",new DialogInterface.OnClickListener(){
-//                public void onClick(DialogInterface dialog, int which){
-//                    dialog.cancel();
-//                }
-//            });
-//            AlertDialog alert=alertDialog.create();
-//            alert.show();
-//        }
-//    }
 
-//    //    public void getCityName(){
-////
-////
-////    }
-//    public void getLocation() {
-//Log.d("Here","Here");
-//        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED)
-//        {
-//            Log.d("HERE","HERE");
-//            fusedlocation.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-//                @Override
-//                public void onSuccess(Location location) {
-//                    if(location!=null){
-//                        Geocoder geocoder=new Geocoder(MainActivity.this,Locale.getDefault());
-//                        try {
-//                            List<Address> addresses=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-//                            Log.d("Address",addresses.get(0).getPostalCode());
-//                        } catch (IOException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//
-//                    }
-//                }
-//            });
-//        }
-////        Log.d("Here", "Here");
-////        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-////            // TODO: Consider calling
-////            //    ActivityCompat#requestPermissions
-////            // here to request the missing permissions, and then overriding
-////            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-////            //                                          int[] grantResults)
-////            // to handle the case where the user grants the permission. See the documentation
-////            // for ActivityCompat#requestPermissions for more details.
-////            Log.d("If", "Here");
-////            return;
-////        }
-////
-////        fusedlocation.requestLocationUpdates(locationRequest, new LocationCallback(){
-////            public void onLocationResult(@NonNull LocationResult locationResult){
-////                onLocationResult(locationResult);
-////                Log.d("MSG",String.valueOf(locationResult));
-////                LocationServices.getFusedLocationProviderClient(MainActivity.this).removeLocationUpdates(this);
-////                if(locationRequest!=null && locationResult.getLocations().size()>0){
-////                    int index=locationResult.getLocations().size()-1;
-////                    double latitude=locationResult.getLocations().get(index).getLatitude();
-////                    Log.d("Latitude",String.valueOf(latitude));
-////                }
-////            }
-//
-//        //  },Looper.getMainLooper());
-////        fusedlocation.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-////            @Override
-////            public void onComplete(@NonNull Task<Location> task) {
-////                Location location = task.getResult();
-////                Log.d("Location", String.valueOf(location));
-////                if (location != null) {
-////                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-////                    try {
-////                        List<Address> addresses = geocoder.getFromLocation(
-////                                location.getLatitude(), location.getLongitude(), 1
-////                        );
-////                        Log.d("Location", String.valueOf(addresses.get(0).getLatitude()));
-////                    } catch (IOException e) {
-////                        throw new RuntimeException(e);
-////                    }
-////
-////                } else {
-////                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-////                        // TODO: Consider calling
-////                        //    ActivityCompat#requestPermissions
-////                        // here to request the missing permissions, and then overriding
-////                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-////                        //                                          int[] grantResults)
-////                        // to handle the case where the user grants the permission. See the documentation
-////                        // for ActivityCompat#requestPermissions for more details.
-////                        return;
-////                    }
-////                    fusedlocation.requestLocationUpdates(new LocationRequest(), locationCallback, Looper.getMainLooper());
-////                }
-////            }
-////        });
-//    }
 }
