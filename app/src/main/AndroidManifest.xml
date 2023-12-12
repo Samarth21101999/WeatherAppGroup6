@@ -14,9 +14,13 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
         <activity
+            android:name=".activity.SelectedCityWeather"
+            android:exported="false"
+            android:theme="@style/Base.Theme.WeatherAppGroup6" />
+        <activity
             android:name=".activity.ListCitiesActivity"
             android:exported="false"
-            android:theme="@style/Base.Theme.WeatherAppGroup6"/>
+            android:theme="@style/Base.Theme.WeatherAppGroup6" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"

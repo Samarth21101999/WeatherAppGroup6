@@ -18,8 +18,11 @@
             android:id="@+id/addCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add City"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:layout_gravity="center"
+            android:imeOptions="actionSend"
+            android:hint="City"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
