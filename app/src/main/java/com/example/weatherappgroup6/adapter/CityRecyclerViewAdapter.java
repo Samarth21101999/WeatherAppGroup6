@@ -48,8 +48,6 @@ public class CityRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Intent intent = new Intent(context, SelectedCityWeather.class);
                     intent.putExtra("City",taskDetails);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // intent.putExtra("TASK_ID", mtasks.get(position).getId());
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             });

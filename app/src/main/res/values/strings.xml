@@ -6,4 +6,6 @@
     <string name="humidity">Humidity</string>
     <string name="description">Description</string>
     <string name="forecast">Forecast for week"</string>
+    <string name="city">City</string>
+    <string name="day">Day</string>
 </resources>

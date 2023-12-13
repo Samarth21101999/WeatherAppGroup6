@@ -43,12 +43,11 @@ public class SelectedCityWeather extends AppCompatActivity {
 
     Context context;
     WeatherRecyclerViewAdapter weatherAdapter;
-    WeatherColumnBinding weatherColumnBinding;
-    private final static int ALL_PERMISSIONS_RESULT = 101;
-
-    private final static int REQUEST_CODE = 100;
-
     List<Weather> weatherList = new ArrayList<>();
+    /*onCreate() method
+     *   In onCreate view is getting set up (activity_selected_city_weather)
+     *   After that calling getCurrentDataFromAPI method to get the current data using cityname.
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,19 +57,21 @@ public class SelectedCityWeather extends AppCompatActivity {
         context = this;
         String cityName=getIntent().getStringExtra("City");
         getCurrentDataFromAPI(cityName, context);
-        //getForecastDataFromAPI(latitude, longitude, context);
         weatherBinding.cityName.setText(cityName);
 
     }
+    /*getCurrentDataFromAPI() method to fetch the data from OpenWeatherAPI using volley
+     *   passing paramaters cityName which is API key.
+     *   In onResponse() method calling setData() method to set the data to mainactivity,
+     * */
     public void getCurrentDataFromAPI(String cityName, Context context) {
         RequestQueue request;
-        List<Weather> weatherData = new ArrayList<>();
+
         String appid = "21e8295debb700f5f00ed1a6ee5f95ad";
         String orginalUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName+ "&appid=" + appid;
-        Log.d("URL", orginalUrl);
+       
         request = Volley.newRequestQueue(context);
-        // String Request initialized
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, orginalUrl, new Response.Listener<String>() {
+        StringRequest sendRequest = new StringRequest(Request.Method.GET, orginalUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 setData(response);
@@ -81,14 +82,18 @@ public class SelectedCityWeather extends AppCompatActivity {
                 Log.d("Error :", error.toString());
             }
         });
-        request.add(stringRequest);
+        request.add(sendRequest);
     }
+    /*setData()method to set the data onto view.
+     *   JSONObject is used because API returns data into JSON format.
+     *   So setting the on particular widget using  JSONObject and JSONArray
+     *   From this method calling getForecastDataFromAPI() method by passing lat, lon and context
+     * */
     private void setData(String response){
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray weatherArray = jsonObject.getJSONArray("weather");
             JSONObject coordinates= jsonObject.getJSONObject("coord");
-            Log.d("coord", String.valueOf(coordinates.getString("lon")));
             double lat= Double.parseDouble(coordinates.getString("lat"));
             double lon= Double.parseDouble(coordinates.getString("lon"));
             getForecastDataFromAPI(lat,lon,context);
@@ -97,64 +102,26 @@ public class SelectedCityWeather extends AppCompatActivity {
             JSONObject mainObject = jsonObject.getJSONObject("main");
             JSONObject windObject = jsonObject.getJSONObject("wind");
             double temp = Double.parseDouble(mainObject.getString("temp"));
-            Log.d("Current Icon",icon);
-            switch (icon) {
-                case "01n":
-                    weatherBinding.imageView.setImageResource(R.drawable.sun);
-                    break;
-                case "01d":
-                    weatherBinding.imageView.setImageResource(R.drawable.sun);
-                    break;
-                case "02n":
-                    weatherBinding.imageView.setImageResource(R.drawable.cloudy);
-                    break;
-                case "02d":
-                    weatherBinding.imageView.setImageResource(R.drawable.cloudy);
-                    break;
-                case "03n":
-                    weatherBinding.imageView.setImageResource(R.drawable.cloud);
-                    break;
-                case "03d":
-                    weatherBinding.imageView.setImageResource(R.drawable.cloud);
-                    break;
-                case "04n":
-                    weatherBinding.imageView.setImageResource(R.drawable.brokenclouds);
-                    break;
-                case "04d":
-                    weatherBinding.imageView.setImageResource(R.drawable.brokenclouds);
-                    break;
-                case "09n":
-                    weatherBinding.imageView.setImageResource(R.drawable.rainy);
-                    break;
-                case "09d":
-                    weatherBinding.imageView.setImageResource(R.drawable.rainy);
-                    break;
-                case "10n":
-                    weatherBinding.imageView.setImageResource(R.drawable.rain);
-                    break;
-                case "10d":
-                    weatherBinding.imageView.setImageResource(R.drawable.rain);
-                    break;
-                case "11n":
-                    weatherBinding.imageView.setImageResource(R.drawable.storm);
-                    break;
-                case "11d":
-                    weatherBinding.imageView.setImageResource(R.drawable.storm);
-                    break;
-                case "13n":
-                    weatherBinding.imageView.setImageResource(R.drawable.snowy);
-                    break;
-                case "13d":
-                    weatherBinding.imageView.setImageResource(R.drawable.snowy);
-                    break;
-                case "50n":
-                    weatherBinding.imageView.setImageResource(R.drawable.foog);
-                    break;
-                case "50d":
-                    weatherBinding.imageView.setImageResource(R.drawable.foog);
-                    break;
-                default:
-                    Toast.makeText(context, "Error in getting image", Toast.LENGTH_SHORT);
+            if(icon.equals("01d") || icon.equals("01n")){
+                weatherBinding.icon.setImageResource(R.drawable.sun);
+            } else if (icon.equals("02d") || icon.equals("02n")) {
+                weatherBinding.icon.setImageResource(R.drawable.cloudy);
+            }else if (icon.equals("03d") || icon.equals("03n")) {
+                weatherBinding.icon.setImageResource(R.drawable.cloud);
+            }
+            else if (icon.equals("04d") || icon.equals("04n")) {
+                weatherBinding.icon.setImageResource(R.drawable.brokenclouds);
+            }
+            else if (icon.equals("09d") || icon.equals("09n")) {
+                weatherBinding.icon.setImageResource(R.drawable.rainy);
+            }else if (icon.equals("10d") || icon.equals("10n")) {
+                weatherBinding.icon.setImageResource(R.drawable.rain);
+            }else if (icon.equals("11d") || icon.equals("11n")) {
+                weatherBinding.icon.setImageResource(R.drawable.storm);
+            }else if (icon.equals("13d") || icon.equals("13n")) {
+                weatherBinding.icon.setImageResource(R.drawable.snowy);
+            }else if (icon.equals("50d") || icon.equals("50n")) {
+                weatherBinding.icon.setImageResource(R.drawable.foog);
             }
             weatherBinding.temp.setText((int) (temp - 273.15) + "°C");
             weatherBinding.description.setText(weatherObject.getString("main"));
@@ -164,13 +131,18 @@ public class SelectedCityWeather extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
+    /*getForecastDataFromAPI() method to fetch the data from OpenWeatherAPI using volley
+     *  passing paramaters like lat, lon, and appid which is API key.
+     *  In onResponse() method calling setForecast() method to set the data.
+     *  Here there is a little bit change in URl, we have added cnt=7 which means requesting 7 days weather data
+     * */
     public void getForecastDataFromAPI(double latitude, double longitude, Context context) {
         RequestQueue request;
         String appid = "21e8295debb700f5f00ed1a6ee5f95ad";
         String lat = String.valueOf(latitude);
         String lon = String.valueOf(longitude);
         String orginalUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=7" + "&appid=" + appid;
-        Log.d("URL", orginalUrl);
+
         request = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, orginalUrl, new Response.Listener<String>() {
             @Override
@@ -185,6 +157,13 @@ public class SelectedCityWeather extends AppCompatActivity {
         });
         request.add(stringRequest);
     }
+    /*
+     * setForecast() method to set the forecast data to recycler view
+     *     JSONObject is used because API returns data into JSON format.
+     *     So setting the on particular widget using  JSONObject and JSONArray
+     *     After adding all data to arraylist named as weatherList
+     *     calling thee setLayout() method and passing weatherlist and then setting the data to recycler view.
+     * */
     private void setForecast(String response) {
 
         try {
@@ -198,20 +177,21 @@ public class SelectedCityWeather extends AppCompatActivity {
                 JSONObject weatherObject = weatherArray.getJSONObject(0);
                 double temp = (Double.parseDouble(tempObject.getString("day"))-273.5);
                 String icon = weatherObject.getString("icon");
-                long date = Long.valueOf(weatherData.getString("dt")) * 1000;// its need to be in milisecond
+                long date = Long.valueOf(weatherData.getString("dt")) * 1000;
                 Date dateFormatted = new java.util.Date(date);
                 String day = new SimpleDateFormat("EEEE", Locale.getDefault()).format(dateFormatted);
-                Log.d("Day", day.substring(0, 3));
                 weatherList.add(new Weather(String.format("%.1f",temp), icon, day.substring(0, 3)));
-                Log.d("Array Size", String.valueOf(weatherList.size()));
             }
             setLayout(weatherList);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }
+    /* setLayout() method to set the horizontal recycler view.
+     *  Passing the weatherlist and context to WeatherRecyclerViewAdapter() constructor in WeatherRecyclerViewAdapter
+     * */
     private void setLayout(List<Weather> weatherList){
-        Log.d("METHOD","SETLAYOUT()");
+
         weatherBinding.forecast.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager=new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
         weatherBinding.forecast.setLayoutManager(mLayoutManager);
@@ -224,6 +204,8 @@ public class SelectedCityWeather extends AppCompatActivity {
         super.onResume();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},5);
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_COARSE_LOCATION},5);
             return;
         }
         

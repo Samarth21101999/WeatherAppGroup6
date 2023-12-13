@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="@dimen/cityPadding"
     tools:context=".activity.ListCitiesActivity"
     >
 
@@ -22,7 +22,7 @@
             android:inputType="textCapSentences|textAutoCorrect"
             android:layout_gravity="center"
             android:imeOptions="actionSend"
-            android:hint="City"/>
+            android:hint="@string/city"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

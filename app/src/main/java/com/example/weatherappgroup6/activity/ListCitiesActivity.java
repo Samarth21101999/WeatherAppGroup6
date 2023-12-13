@@ -29,20 +29,29 @@ public class ListCitiesActivity extends AppCompatActivity {
     ActivityListCitiesBinding activityListCitiesBinding;
     private List<City> myCities = new ArrayList<>();
     private CityRecyclerViewAdapter cAdapter;
+    /*onCreate() method
+     *  In the onCreate() method setting up the view and calling init method
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityListCitiesBinding = ActivityListCitiesBinding.inflate(getLayoutInflater());
         View view = activityListCitiesBinding.getRoot();
         setContentView(view);
-       init();
+        init();
     }
+    /*init() method
+     *  In init() calling setLayout and initCity
+     * */
     private void init() {
         setLayout();
-        initTask();
+        initCity();
     }
-
-    private void initTask() { //to add time in middle term
+    /*initCity() method
+     *  From initCity() method add the city to recycler view using onEditorAction
+     *  And also comparing city if already exists or not
+     * */
+    private void initCity() {
         activityListCitiesBinding.addCity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
@@ -50,8 +59,8 @@ public class ListCitiesActivity extends AppCompatActivity {
                     String text = v.getText().toString();
                     if (!TextUtils.isEmpty(text)) {
                         if(CityUtils.compareCity(text,getApplicationContext())){
-                            City city=createTask(null,text);
-                            updateTask(city, Constants.ACTION_ADD);
+                            City city=createCity(null,text);
+                            updateCity(city, Constants.ACTION_ADD);
                             v.setText("");
                             return true;
                         }else{
@@ -65,52 +74,58 @@ public class ListCitiesActivity extends AppCompatActivity {
         });
     }
 
-    private City createTask(String id, String city) {
+    /*createCity() method to add the id to City model
+    * */
+    private City createCity(String id, String city) {
         if (id == null) {
             id = String.valueOf(System.currentTimeMillis());
         }
         return new City(id, city);
     }
 
-    private void updateTask(City city, int action) {
+    /*updateCity() method to save city to shared preference
+     *  There is one condition only 5 cities can be added
+     * */
+    private void updateCity(City city, int action) {
         if (action == Constants.ACTION_ADD) {
             if(!(myCities.size() >4)){
-                for(int i=0;i<myCities.size();i++){
-                    Log.d("City Name",myCities.get(i).getCity());
-//                    if(myCities.get(i).getCity()==city.getCity()){
-//                        Log.d("Message","City Exists");
-//                    }
-                }
-//                Log.d("City Name",city.getCity());
                 CityUtils.saveCity(city, this);
             }else{
                 Toast.makeText(this,"You can only add five cities",Toast.LENGTH_LONG).show();
             }
-
-            //ConfirmUtils.showSavedMessage(getString(R.string.task_saved), this);
         }
-        updateTaskAdapter();
+        updateCityAdapter();
     }
 
-    private void updateTaskAdapter() {
+    /*updateCityAdapter()
+    *   To add all cities that we get from sharedPreference
+    *   After that bindAdapter() to bind data to recycler view.
+    * */
+    private void updateCityAdapter() {
         myCities.clear();
         myCities.addAll(CityUtils.getAllCities(this));
         bindAdapter();
     }
-
+    /*setLayout() to set the recyclerView
+    * */
     private void setLayout() {
         activityListCitiesBinding.cityRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         activityListCitiesBinding.cityRecyclerView.setLayoutManager(mLayoutManager);
     }
 
+    /*bindAdapter()
+    * Initializing the CityRecyclerViewAdapter constructor to bind the data*/
     private void bindAdapter() {
         cAdapter = new CityRecyclerViewAdapter(myCities, getApplicationContext());
         activityListCitiesBinding.cityRecyclerView.setAdapter(cAdapter);
     }
 
+    /*onResume() method
+    * When activity resumes call updateCityAadapter() to bind the data to recycler view.
+    * */
     protected void onResume() {
         super.onResume();
-        updateTaskAdapter();
+        updateCityAdapter();
     }
 }

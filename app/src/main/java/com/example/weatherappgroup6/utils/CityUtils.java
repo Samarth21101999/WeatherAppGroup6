@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class CityUtils {
+    /*  saveCity() method
+    *   To save the cities to sharedpreference
+    * */
     public static void saveCity(City city, Context context) {
         if (city != null) {
             SharedPreferences sharedPref = context.getSharedPreferences("cities", Context.MODE_PRIVATE);
@@ -21,15 +24,10 @@ public class CityUtils {
             editor.commit();
         }
     }
-    public static void deleteCity(String id, Context context) {
-        if (id != null){
-
-            SharedPreferences sharedPref = context.getSharedPreferences("cities", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.remove(id);
-            editor.commit();
-        }
-    }
+    /*compareCity() method
+    *   To prevent duplicate entry comparing the already existing cities from sharedPreference
+    *   Return false if exists and true if not exists.
+    * */
     public static boolean compareCity(String text, Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("cities", Context.MODE_PRIVATE);
         List<City> cityList = new ArrayList<>();
@@ -43,19 +41,19 @@ public class CityUtils {
             String savedTask = (String) entry.getValue();
             if (savedTask != null) {
                 text=text.toLowerCase();
-                //City city = new City(entry.getKey().toString(), savedTask);
                 if(text.equals(((String) entry.getValue()).toLowerCase())){
-                  Log.d("Exists","Exists");
+
                   return false;
                 }else{
-                    Log.d("Not Exists","Not exists");
                     return true;
                 }
-                // cityList.add(city);
+
             }
         }
         return true;
     }
+    /*getAllCities() method to get all the cities in shared preference and adding to cityList and returning it.
+    * */
     public static List<City> getAllCities (Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences("cities", Context.MODE_PRIVATE);
         List<City> cityList = new ArrayList<>();

@@ -4,4 +4,8 @@
     <dimen name="buttonSize">20dp</dimen>
     <dimen name="linearLayoutWidth">40dp</dimen>
     <dimen name="recyclerSize">30dp</dimen>
+    <dimen name="cityPadding">5dp</dimen>
+    <integer name="weight">1</integer>
+    <dimen name="cityRow">15sp</dimen>
+    <dimen name="weatherPadding">10dp</dimen>
 </resources>

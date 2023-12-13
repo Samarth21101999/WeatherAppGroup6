@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="@dimen/cityPadding"
     tools:context=".activity.SelectedCityWeather"
     >
     <LinearLayout
@@ -13,16 +13,6 @@
         android:orientation="vertical"
         android:scrollbars="vertical"
         >
-
-
-<!--        <Button-->
-<!--            android:id="@+id/listBtn"-->
-<!--            android:layout_width="@dimen/buttonSize"-->
-<!--            android:layout_height="@dimen/buttonSize"-->
-<!--            android:background="@drawable/list"-->
-<!--            android:layout_gravity="center"-->
-<!--            />-->
-
         <TextView
             android:id="@+id/cityName"
             android:layout_width="match_parent"
@@ -41,7 +31,7 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/icon"
                 android:layout_width="@dimen/linearLayoutWidth"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -58,7 +48,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="@dimen/buttonSize"
             android:orientation="horizontal"
             android:gravity="center">
 
@@ -68,14 +58,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/wind"
-                android:layout_weight="1"
+                android:layout_weight="@integer/weight"
                 android:textStyle="bold"
                 android:src="@mipmap/ic_launcher" />
             <TextView
                 android:id="@+id/humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="@integer/weight"
                 android:gravity="center"
                 android:text="@string/humidity"
                 android:textStyle="bold"/>
@@ -94,7 +84,7 @@
             android:text="@string/forecast"
             android:gravity="center"
             android:textStyle="bold"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="@dimen/cityPadding"/>
 
         <ScrollView
             android:layout_width="match_parent"

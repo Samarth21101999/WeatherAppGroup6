@@ -6,8 +6,8 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:gravity="center"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
+    android:layout_marginStart="@dimen/weatherPadding"
+    android:layout_marginEnd="@dimen/weatherPadding"
     android:orientation="horizontal"
     >
     <androidx.cardview.widget.CardView
@@ -23,24 +23,24 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_weight="1"
+            android:layout_width="@dimen/buttonSize"
+            android:layout_height="@dimen/buttonSize"
+            android:layout_weight="@integer/weight"
             />
 
         <TextView
             android:id="@+id/temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Temp"
+            android:layout_weight="@integer/weight"
+            android:text="@string/temp"
             android:gravity="center"/>
         <TextView
             android:id="@+id/day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Day"
+            android:layout_weight="@integer/weight"
+            android:text="@string/day"
             android:gravity="center"/>
     </LinearLayout>
     </androidx.cardview.widget.CardView>
