@@ -30,7 +30,6 @@ public class CityUtils {
     * */
     public static boolean compareCity(String text, Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("cities", Context.MODE_PRIVATE);
-        List<City> cityList = new ArrayList<>();
         Map<String, ?> map = sharedPref.getAll();
         Set set = map.entrySet();
         Iterator itr = set.iterator();
@@ -47,7 +46,6 @@ public class CityUtils {
                 }else{
                     return true;
                 }
-
             }
         }
         return true;
@@ -55,10 +53,10 @@ public class CityUtils {
     /*getAllCities() method to get all the cities in shared preference and adding to cityList and returning it.
     * */
     public static List<City> getAllCities (Context context) {
+
         SharedPreferences sharedPref = context.getSharedPreferences("cities", Context.MODE_PRIVATE);
         List<City> cityList = new ArrayList<>();
         Map<String, ?> map = sharedPref.getAll();
-
         Set set = map.entrySet();
         Iterator itr = set.iterator();
 

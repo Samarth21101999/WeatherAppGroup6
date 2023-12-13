@@ -69,6 +69,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return new ViewHolder(weatherColumnBinding);
     }
 
+    //onBindViewHolder() method call the bindView and set the data and increase the row according to position
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((ViewHolder) holder).bindView(weatherList,position);

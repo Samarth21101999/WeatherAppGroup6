@@ -30,7 +30,7 @@ public class ListCitiesActivity extends AppCompatActivity {
     private List<City> myCities = new ArrayList<>();
     private CityRecyclerViewAdapter cAdapter;
     /*onCreate() method
-     *  In the onCreate() method setting up the view and calling init method
+     *  In the onCreate() method setting up the view
      * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,13 @@ public class ListCitiesActivity extends AppCompatActivity {
         activityListCitiesBinding = ActivityListCitiesBinding.inflate(getLayoutInflater());
         View view = activityListCitiesBinding.getRoot();
         setContentView(view);
-        init();
-    }
-    /*init() method
-     *  In init() calling setLayout and initCity
-     * */
-    private void init() {
-        setLayout();
         initCity();
+        activityListCitiesBinding.cityRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        activityListCitiesBinding.cityRecyclerView.setLayoutManager(mLayoutManager);
+
     }
+
     /*initCity() method
      *  From initCity() method add the city to recycler view using onEditorAction
      *  And also comparing city if already exists or not
@@ -59,7 +57,7 @@ public class ListCitiesActivity extends AppCompatActivity {
                     String text = v.getText().toString();
                     if (!TextUtils.isEmpty(text)) {
                         if(CityUtils.compareCity(text,getApplicationContext())){
-                            City city=createCity(null,text);
+                            City city=new City(String.valueOf(myCities.size()+1),text);
                             updateCity(city, Constants.ACTION_ADD);
                             v.setText("");
                             return true;
@@ -74,14 +72,7 @@ public class ListCitiesActivity extends AppCompatActivity {
         });
     }
 
-    /*createCity() method to add the id to City model
-    * */
-    private City createCity(String id, String city) {
-        if (id == null) {
-            id = String.valueOf(System.currentTimeMillis());
-        }
-        return new City(id, city);
-    }
+
 
     /*updateCity() method to save city to shared preference
      *  There is one condition only 5 cities can be added
@@ -99,27 +90,15 @@ public class ListCitiesActivity extends AppCompatActivity {
 
     /*updateCityAdapter()
     *   To add all cities that we get from sharedPreference
-    *   After that bindAdapter() to bind data to recycler view.
+    *
     * */
     private void updateCityAdapter() {
         myCities.clear();
         myCities.addAll(CityUtils.getAllCities(this));
-        bindAdapter();
-    }
-    /*setLayout() to set the recyclerView
-    * */
-    private void setLayout() {
-        activityListCitiesBinding.cityRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        activityListCitiesBinding.cityRecyclerView.setLayoutManager(mLayoutManager);
-    }
-
-    /*bindAdapter()
-    * Initializing the CityRecyclerViewAdapter constructor to bind the data*/
-    private void bindAdapter() {
         cAdapter = new CityRecyclerViewAdapter(myCities, getApplicationContext());
         activityListCitiesBinding.cityRecyclerView.setAdapter(cAdapter);
     }
+
 
     /*onResume() method
     * When activity resumes call updateCityAadapter() to bind the data to recycler view.

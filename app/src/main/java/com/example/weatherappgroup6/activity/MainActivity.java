@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
     *     calling thee setLayout() method and passing weatherlist and then setting the data to recycler view.
     * */
     private void setForecast(String response) {
+        weatherList.clear();
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray listData = jsonObject.getJSONArray("list");
@@ -270,9 +271,9 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_COARSE_LOCATION},5);
             return;
         }
-        location.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                1000,
-                20, locationListener);
+//        location.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                1000,
+//                20, locationListener);
 
     }
 

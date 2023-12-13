@@ -21,26 +21,33 @@ public class CityRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<City> cities;
     Context context;
 
+    //    Constructor of CityRecyclerViewAdapater
     public CityRecyclerViewAdapter(List<City> cityList, Context objContext) {
         super();
         this.cities = cityList;
         this.context = objContext;
     }
 
+    //  //    onCreateViewHolder() to set the city_row into recycler view
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         //return null;
         LayoutInflater layoutInflater=LayoutInflater.from(parent.getContext());
         rowBinding=rowBinding.inflate(layoutInflater,parent,false);
         return new ViewHolder(rowBinding);
     }
+
     class ViewHolder extends RecyclerView.ViewHolder{
         CityRowBinding recyclerRowBinding;
 
-        public ViewHolder(CityRowBinding taskRowBinding) {
-            super(taskRowBinding.getRoot());
-            this.recyclerRowBinding = taskRowBinding;
+        public ViewHolder(CityRowBinding cityRowBinding) {
+            super(cityRowBinding.getRoot());
+            this.recyclerRowBinding = cityRowBinding;
         }
-
+    /*bindView() method
+     *    bind the data to recycler view
+     *    upon clicking on particular city redirects to SelectedCityWeather,
+     *    to get the detail weather of particular city.
+     * */
         public void bindView(final String taskDetails, final int position) {
             recyclerRowBinding.cityName.setText (taskDetails);
             itemView.setOnClickListener(new View.OnClickListener(){
@@ -54,7 +61,7 @@ public class CityRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-
+    //onBindViewHolder() method call the bindView and set the data and increase the row according to position
     public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, int position) {
         ((ViewHolder)holder).bindView(cities.get(position).getCity(),position);
     }

@@ -180,7 +180,7 @@ public class SelectedCityWeather extends AppCompatActivity {
                 long date = Long.valueOf(weatherData.getString("dt")) * 1000;
                 Date dateFormatted = new java.util.Date(date);
                 String day = new SimpleDateFormat("EEEE", Locale.getDefault()).format(dateFormatted);
-                weatherList.add(new Weather(String.format("%.1f",temp), icon, day.substring(0, 3)));
+                weatherList.add(new Weather(String.format("%.0f",temp), icon, day.substring(0, 3)));
             }
             setLayout(weatherList);
         } catch (JSONException e) {
@@ -199,6 +199,7 @@ public class SelectedCityWeather extends AppCompatActivity {
         weatherBinding.forecast.setAdapter(weatherAdapter);
         weatherAdapter.notifyDataSetChanged();
     }
+
 
     protected void onResume() {
         super.onResume();
